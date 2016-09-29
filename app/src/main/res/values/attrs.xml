@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomImageView">
+        <attr name="roundRadius" format="dimension" />
+        <attr name="roundRadiusLeftTop" format="dimension" />
+        <attr name="roundRadiusRightTop" format="dimension" />
+        <attr name="roundRadiusRightBottom" format="dimension" />
+        <attr name="roundRadiusLeftBottom" format="dimension" />
+    </declare-styleable>
+    
+    <declare-styleable name="BorderImageView">
+        <attr name="borderColor" format="color" />
+        <attr name="borderSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="TagImageView">
+        <attr name="tagOrientation" format="enum">
+            <enum name="left_top" value="0" />
+            <enum name="right_top" value="1" />
+            <enum name="right_bottom" value="2" />
+            <enum name="left_bottom" value="3" />
+        </attr>
+        <attr name="tagBackgroundColor" format="color"/>
+        <attr name="tagCornerDistance" format="dimension"/>
+        <attr name="tagWidth" format="dimension"/>
+        <attr name="tagText" format="string"/>
+        <attr name="tagTextSize" format="dimension"/>
+        <attr name="tagTextColor" format="color"/>
+        <attr name="tagEnable" format="boolean"/>
+        <attr name="tagTextDownX" format="dimension"/>
+        <attr name="tagTextRotate" format="integer"/>
+
+    </declare-styleable>
+
+</resources>

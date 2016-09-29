@@ -1,0 +1,120 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#123456">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context="com.ctao.customview.MainActivity" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.ctao.customview.widget.CustomImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:roundRadius="50dp" />
+
+            <com.ctao.customview.widget.CustomImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:roundRadiusLeftBottom="80dp"
+                app:roundRadiusLeftTop="20dp"
+                app:roundRadiusRightBottom="20dp"
+                app:roundRadiusRightTop="80dp" />
+
+            <com.ctao.customview.widget.CustomImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:roundRadiusLeftBottom="50dp"
+                app:roundRadiusLeftTop="12dp"
+                app:roundRadiusRightBottom="50dp"
+                app:roundRadiusRightTop="50dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.ctao.customview.widget.BorderImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:borderColor="#456123"
+                app:borderSize="3dp"
+                app:roundRadius="50dp" />
+
+            <com.ctao.customview.widget.BorderImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:borderColor="#456123"
+                app:borderSize="5dp"
+                app:roundRadius="50dp"
+                app:roundRadiusLeftTop="50dp"
+                app:roundRadiusRightTop="50dp" />
+
+            <com.ctao.customview.widget.BorderImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:borderSize="5dp"
+                app:roundRadiusLeftTop="100dp"
+                app:roundRadiusRightBottom="100dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.ctao.customview.widget.TagImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:roundRadius="50dp"
+                app:tagCornerDistance="0dp"
+                app:tagTextDownX="14dp"
+                app:tagWidth="50dp" />
+
+            <com.ctao.customview.widget.TagImageView
+                app:roundRadiusLeftBottom="80dp"
+                app:roundRadiusLeftTop="20dp"
+                app:roundRadiusRightBottom="20dp"
+                app:roundRadiusRightTop="80dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:tagOrientation="right_bottom" />
+
+            <com.ctao.customview.widget.TagImageView
+                app:borderColor="#FFBC1B1B"
+                app:borderSize="1.5dp"
+                app:tagWidth="50dp"
+                app:tagTextDownX="14dp"
+                app:tagBackgroundColor="#FFBC1B1B"
+                app:tagText="1"
+                app:tagTextRotate="45"
+                app:tagCornerDistance="0dp"
+                app:roundRadiusLeftBottom="50dp"
+                app:roundRadiusLeftTop="12dp"
+                app:roundRadiusRightBottom="50dp"
+                app:roundRadiusRightTop="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
