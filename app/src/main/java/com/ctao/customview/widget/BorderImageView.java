@@ -4,22 +4,20 @@ import com.ctao.customview.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 
-/**
- * Created by A Miracle on 2016/9/29.
- */
-public class BorderImageView extends CustomImageView {
+public class BorderImageView extends RoundedImageView {
 	
 	private int mBorderColor = -5832960;
 	private float mBorderSize = 3;
 	private Paint mBorderPaint;
-	private Path mPath;
 	private boolean mIsSetupBorderSize;
+	private Path mBorderPath;
 	
 	public BorderImageView(Context context) {
 		this(context, null);
@@ -73,40 +71,15 @@ public class BorderImageView extends CustomImageView {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		if(mBorderSize == 0){
-			super.onDraw(canvas);
-		}else{
-			drawToCanvas(canvas);
+		if(mBorderSize != 0){
+			if(getRadius() == null){
+				setRadius(new float[] { 0f, 0f, 0f, 0f }); //为null, mPathFactory.planRoundPath直接return;
+			}
 		}
+		super.onDraw(canvas);
 	}
 
-	@Override
-	protected void drawToCanvas(Canvas canvas) {
-		if (getDrawable() == null) {
-			return;
-		}
-		
-		if(mPath == null){
-			mPath = new Path();
-		}
-
-		RectF rect = getRectF();
-		mPath.reset();
-		if(getRadius() == null){
-			setRadius(new float[] { 0f, 0f, 0f, 0f }); //为null, mPathFactory.planRoundPath直接return;
-		}
-		mPathFactory.planRoundPath(getRadius(), rect, mPath, mBorderSize / 2); //规划Path
-		setupBitmapPaint();
-		canvas.drawPath(mPath, getBitmapPaint());
-		
-		//draw border
-		if(mBorderSize > 0){
-			setupBorderPaint();
-			canvas.drawPath(mPath, mBorderPaint);
-		}
-	}
-	
-	protected void setupBorderPaint(){
+	private void setupBorderPaint(){
 		if(mBorderPaint == null){
 			mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			mBorderPaint.setDither(false);
@@ -114,5 +87,40 @@ public class BorderImageView extends CustomImageView {
 		mBorderPaint.setColor(mBorderColor);
 		mBorderPaint.setStrokeWidth(mBorderSize);
 		mBorderPaint.setStyle(Paint.Style.STROKE);
+	}
+	
+	@Override
+	protected Bitmap getBitmapFromDrawable() {
+		Bitmap bitmap = super.getBitmapFromDrawable();
+		if (!isSetupBorderSize()) {
+			return bitmap;
+		}
+
+		Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(tempBitmap);
+		canvas.drawBitmap(bitmap, 0, 0, null);
+
+		// add border
+		addBorder(canvas);
+
+		return tempBitmap;
+	}
+
+	private void addBorder(Canvas canvas) {
+		RectF rect = getRectF();
+		if (mBorderPath == null) {
+			mBorderPath = new Path();
+		}
+		mBorderPath.reset();
+		if (getRadius() == null) {
+			setRadius(new float[] { 0f, 0f, 0f, 0f }); // 为null, mPathFactory.planRoundPath直接return;
+		}
+		mPathFactory.planRoundPath(getRadius(), rect, mBorderPath, mBorderSize / 2); // 规划Path
+
+		// draw border
+		if (mBorderSize > 0) {
+			setupBorderPaint();
+			canvas.drawPath(mBorderPath, mBorderPaint);
+		}
 	}
 }

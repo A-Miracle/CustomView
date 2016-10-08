@@ -11,12 +11,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import com.ctao.customview.R;
-import com.ctao.customview.utils.BitmapUtils;
 import com.ctao.customview.utils.DisplayUtils;
 
-/**
- * Created by A Miracle on 2016/9/29.
- */
 public class TagImageView extends BorderImageView {
 
 	private static final int LEFT_TOP = 0x00;
@@ -97,7 +93,7 @@ public class TagImageView extends BorderImageView {
 	// replace bitmap, add tag
 	@Override
 	protected Bitmap getBitmapFromDrawable() {
-		Bitmap bitmap = BitmapUtils.getBitmapFromDrawable(getDrawable());
+		Bitmap bitmap = super.getBitmapFromDrawable();
 		if (!isEnable) {
 			return bitmap;
 		}
@@ -201,7 +197,7 @@ public class TagImageView extends BorderImageView {
 		mTagTextPaint.setColor(mTagTextColor);
 	}
 
-	private static class Point {
+	private class Point {
 		float x;
 		float y;
 	}

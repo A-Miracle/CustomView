@@ -17,13 +17,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <com.ctao.customview.widget.CustomImageView
+            <com.ctao.customview.widget.RoundedImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon"
                 app:roundRadius="50dp" />
 
-            <com.ctao.customview.widget.CustomImageView
+            <com.ctao.customview.widget.RoundedImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon"
@@ -32,7 +32,7 @@
                 app:roundRadiusRightBottom="20dp"
                 app:roundRadiusRightTop="80dp" />
 
-            <com.ctao.customview.widget.CustomImageView
+            <com.ctao.customview.widget.RoundedImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon"
@@ -114,6 +114,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.ctao.customview.widget.RotateView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:roundRadius="50dp"
+                app:tagCornerDistance="0dp"
+                app:tagTextDownX="14dp"
+                app:rotateRate="1"
+                app:tagText="旋转"
+                app:rotateDirection="clockwise"
+                app:tagWidth="50dp" />
+
+            <com.ctao.customview.widget.RotateView
+                app:tagEnable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:borderColor="#456123"
+                app:borderSize="3dp"
+                app:roundRadius="50dp"
+                app:rotateRate="1"
+                app:rotateDirection="counterclockwise"/>
+
+            <com.ctao.customview.widget.RotateView
+                app:tagEnable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:roundRadius="50dp"
+                app:rotateRate="1"
+                app:rotateDirection="clockwise" />
         </LinearLayout>
     </LinearLayout>
 
