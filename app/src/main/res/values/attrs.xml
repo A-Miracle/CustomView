@@ -32,12 +32,16 @@
         <attr name="tagTextRotate" format="integer"/>
     </declare-styleable>
 
-    <declare-styleable name="RotateView">
+    <declare-styleable name="RotateImageView">
         <attr name="rotateDegree" format="integer"/>
         <attr name="rotateRate" format="integer"/>
         <attr name="rotateDirection" format="enum">
             <enum name="clockwise" value="1" />
             <enum name="counterclockwise" value="-1" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SvgImageView">
+        <attr name="svgRawResourceId" format="reference"/>
     </declare-styleable>
 </resources>

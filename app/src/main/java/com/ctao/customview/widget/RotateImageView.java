@@ -1,6 +1,5 @@
 package com.ctao.customview.widget;
 
-import com.ctao.customview.R;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,7 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 
-public class RotateView extends TagImageView {
+import com.ctao.customview.R;
+
+public class RotateImageView extends TagImageView {
 	public final static int CLOCKWISE = 1;
 	public final static int COUNTERCLOCKWISE = -1;
 	private int mDegree; //角度
@@ -17,24 +18,24 @@ public class RotateView extends TagImageView {
 	private int isNotChange;
 	private Bitmap mTempBitmap;
 
-	public RotateView(Context context) {
+	public RotateImageView(Context context) {
 		this(context, null);
 	}
 
-	public RotateView(Context context, AttributeSet attrs) {
+	public RotateImageView(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 
-	public RotateView(Context context, AttributeSet attrs, int defStyleAttr) {
+	public RotateImageView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		init(context, attrs);
 	}
 	
 	private void init(Context context, AttributeSet attrs) {
-		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.RotateView);
-		mDegree = ta.getInteger(R.styleable.RotateView_rotateDegree, 0);
-		mRate = ta.getInteger(R.styleable.RotateView_rotateRate, 0);
-		mDirection = ta.getInteger(R.styleable.RotateView_rotateDirection, CLOCKWISE);
+		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.RotateImageView);
+		mDegree = ta.getInteger(R.styleable.RotateImageView_rotateDegree, 0);
+		mRate = ta.getInteger(R.styleable.RotateImageView_rotateRate, 0);
+		mDirection = ta.getInteger(R.styleable.RotateImageView_rotateDirection, CLOCKWISE);
 		ta.recycle();
 	}
 	

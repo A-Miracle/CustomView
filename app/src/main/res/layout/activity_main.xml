@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <com.ctao.customview.widget.RotateView
+            <com.ctao.customview.widget.RotateImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon"
@@ -132,7 +132,7 @@
                 app:rotateDirection="clockwise"
                 app:tagWidth="50dp" />
 
-            <com.ctao.customview.widget.RotateView
+            <com.ctao.customview.widget.RotateImageView
                 app:tagEnable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -143,7 +143,7 @@
                 app:rotateRate="1"
                 app:rotateDirection="counterclockwise"/>
 
-            <com.ctao.customview.widget.RotateView
+            <com.ctao.customview.widget.RotateImageView
                 app:tagEnable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,6 +151,30 @@
                 app:roundRadius="50dp"
                 app:rotateRate="1"
                 app:rotateDirection="clockwise" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <com.ctao.customview.svg.widget.SvgImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:svgRawResourceId="@raw/shape_heart" />
+
+            <com.ctao.customview.svg.widget.SvgImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:svgRawResourceId="@raw/shape_star_5" />
+
+            <com.ctao.customview.svg.widget.SvgImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon"
+                app:svgRawResourceId="@raw/shape_star_20" />
         </LinearLayout>
     </LinearLayout>
 
