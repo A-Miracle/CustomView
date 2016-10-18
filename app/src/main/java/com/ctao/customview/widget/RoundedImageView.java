@@ -11,7 +11,6 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.ctao.customview.R;
@@ -123,15 +122,7 @@ public class RoundedImageView extends ImageView {
 		
 		BitmapShader bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 
-		if(getScaleType() != ScaleType.FIT_XY){
-            Log.w(TAG,String.format("Now scale type just support fitXY,other type invalid"));
-        }
-		
-        //now scale type just support fitXY
-        //todo support all scale type
-        Matrix mMatrix = new Matrix();
-        mMatrix.setScale(getWidth() * 1.0f / bitmap.getWidth(), getHeight() * 1.0f / bitmap.getHeight());
-        bitmapShader.setLocalMatrix(mMatrix);
+		bitmapShader.setLocalMatrix(getImageMatrix());
         
 		if(mBitmapPaint == null){
 			mBitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
