@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -22,7 +21,8 @@ public class RoundedImageView extends ImageView {
 	protected static final String TAG = RoundedImageView.class.getSimpleName();
 
 	protected PathFactory mPathFactory;
-	
+
+	private boolean isCircle;
 	private float[] mRadius; // [LeftTop, RightTop, RightBottom, LeftBottom]
 	private Paint mBitmapPaint;
 	private Path mPath;
@@ -49,6 +49,7 @@ public class RoundedImageView extends ImageView {
 		float radiusRightTop = ta.getDimension(R.styleable.RoundedImageView_roundRadiusRightTop, 0);
 		float radiusRightBottom = ta.getDimension(R.styleable.RoundedImageView_roundRadiusRightBottom, 0);
 		float radiusLeftBottom = ta.getDimension(R.styleable.RoundedImageView_roundRadiusLeftBottom, 0);
+		isCircle = ta.getBoolean(R.styleable.RoundedImageView_roundRadiusIsCircle, false);
 		ta.recycle();
 
 		if (radius != 0) {
@@ -66,7 +67,25 @@ public class RoundedImageView extends ImageView {
 
 		mPathFactory = new PathFactory();
 	}
-	
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		if(isCircle){
+            int measuredWidth = getMeasuredWidth();
+            int measuredHeight = getMeasuredHeight();
+
+            if (measuredWidth != 0 || measuredHeight != 0) {
+                int size = measuredWidth > measuredHeight ? measuredHeight : measuredWidth;
+                float radius = size / 2.0f;
+                if (radius != 0) {
+                    mRadius = new float[]{radius, radius, radius, radius};
+                }
+                setMeasuredDimension(size, size);
+            }
+        }
+	}
+
 	public float[] getRadius() {
 		return mRadius;
 	}

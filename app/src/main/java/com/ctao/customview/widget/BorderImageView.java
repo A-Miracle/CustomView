@@ -1,7 +1,5 @@
 package com.ctao.customview.widget;
 
-import com.ctao.customview.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -9,10 +7,14 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 
+import com.ctao.customview.R;
+
 public class BorderImageView extends RoundedImageView {
-	
+
+	@ColorInt
 	private int mBorderColor = -5832960;
 	private float mBorderSize = 3;
 	private Paint mBorderPaint;
