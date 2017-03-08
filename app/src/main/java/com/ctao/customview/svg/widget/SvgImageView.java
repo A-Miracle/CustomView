@@ -13,7 +13,6 @@ import android.graphics.Xfermode;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.ctao.customview.R;
 import com.ctao.customview.svg.SVG;
@@ -25,7 +24,7 @@ import java.lang.ref.WeakReference;
  * reference https://github.com/MostafaGazar/CustomShapeImageView
  * @author Miracle
  */
-public class SvgImageView extends ImageView {
+public class SvgImageView extends android.support.v7.widget.AppCompatImageView {
 	
 	private static final String TAG = SvgImageView.class.getSimpleName();
 	private static final Xfermode sXfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_IN);

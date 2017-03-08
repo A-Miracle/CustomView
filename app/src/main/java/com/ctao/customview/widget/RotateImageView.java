@@ -1,6 +1,5 @@
 package com.ctao.customview.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -9,7 +8,7 @@ import android.util.AttributeSet;
 
 import com.ctao.customview.R;
 
-public class RotateImageView extends TagImageView {
+public class RotateImageView extends BorderImageView {
 	public final static int CLOCKWISE = 1;
 	public final static int COUNTERCLOCKWISE = -1;
 	private int mDegree; //角度
@@ -39,7 +38,6 @@ public class RotateImageView extends TagImageView {
 		ta.recycle();
 	}
 	
-	@SuppressLint("DrawAllocation")
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if(mRate == 0 && mDegree == 0){

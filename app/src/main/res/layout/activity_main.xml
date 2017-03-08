@@ -80,6 +80,7 @@
             android:orientation="horizontal" >
 
             <com.ctao.customview.widget.TagImageView
+                app:tagEnable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon"
@@ -89,6 +90,7 @@
                 app:tagWidth="50dp" />
 
             <com.ctao.customview.widget.TagImageView
+                app:tagEnable="true"
                 app:roundRadiusLeftBottom="80dp"
                 app:roundRadiusLeftTop="20dp"
                 app:roundRadiusRightBottom="20dp"
@@ -98,7 +100,8 @@
                 android:src="@mipmap/icon"
                 app:tagOrientation="right_bottom" />
 
-            <com.ctao.customview.widget.TagImageView
+            <com.ctao.customview.widget.BorderImageView
+                app:tagEnable="true"
                 app:borderColor="#FFBC1B1B"
                 app:borderSize="1.5dp"
                 app:tagWidth="50dp"
@@ -121,6 +124,7 @@
             android:orientation="horizontal" >
 
             <com.ctao.customview.widget.RotateImageView
+                app:tagEnable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon"
@@ -149,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/icon"
                 app:roundRadius="50dp"
-                app:rotateRate="1"
+                app:rotateDegree="45"
                 app:rotateDirection="clockwise" />
         </LinearLayout>
 

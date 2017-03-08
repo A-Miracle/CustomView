@@ -9,35 +9,37 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import com.ctao.customview.R;
 import com.ctao.customview.utils.BitmapUtils;
 import com.ctao.customview.utils.PathFactory;
 
-public class RoundedImageView extends ImageView {
-
-	protected static final String TAG = RoundedImageView.class.getSimpleName();
+/**
+ * android.support.v7.widget.AppCompatImageView == ImageView
+ * 圆形/圆角ImageView
+ * 支持部分圆角
+ */
+public class RoundedImageView extends android.support.v7.widget.AppCompatImageView {
 
 	protected PathFactory mPathFactory;
 
-	private boolean isCircle;
-	private float[] mRadius; // [LeftTop, RightTop, RightBottom, LeftBottom]
-	private Paint mBitmapPaint;
-	private Path mPath;
+    protected boolean isCircle;
+    protected float[] mRadius; // [LeftTop, RightTop, RightBottom, LeftBottom]
+    protected Paint mBitmapPaint;
+    protected Path mPath;
 
-	private RectF mRect;
-	
 	public RoundedImageView(Context context) {
 		this(context, null);
 	}
 
-	public RoundedImageView(Context context, AttributeSet attrs) {
+	public RoundedImageView(Context context, @Nullable AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 	
-	public RoundedImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+	public RoundedImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		init(context, attrs);
 	}
@@ -66,6 +68,9 @@ public class RoundedImageView extends ImageView {
 		}
 
 		mPathFactory = new PathFactory();
+		mPath = new Path();
+		mBitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mBitmapPaint.setDither(false);
 	}
 
 	@Override
@@ -92,74 +97,66 @@ public class RoundedImageView extends ImageView {
 
 	/** [LeftTop, RightTop, RightBottom, LeftBottom] */
 	public void setRadius(float[] radius) {
-		this.mRadius = radius;
-		invalidate();
+        setRadius(radius, true);
 	}
-	
+
+	/** [LeftTop, RightTop, RightBottom, LeftBottom] */
+	protected void setRadius(float[] radius, boolean invalidate) {
+		mRadius = radius;
+        if(invalidate){
+            invalidate();
+        }
+	}
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		if (mRadius == null) {
 			super.onDraw(canvas);
 		}else{
-			RectF rect = getRectF();
-			if(mPath == null){
-				mPath = new Path();
-			}
+			drawRounded(canvas);
+		}
+	}
+
+	private void drawRounded(Canvas canvas) {
+        if (!setupBitmapPaint()){
+            return;
+        }
+
+        RectF rect = getRectF();
+		if (mRadius[0] == mRadius[1] && mRadius[0] == mRadius[2] && mRadius[0] == mRadius[3]) {
+			canvas.drawRoundRect(rect, mRadius[0], mRadius[0], mBitmapPaint);
+		}else{
 			mPath.reset();
 			mPathFactory.planRoundPath(mRadius, rect, mPath, 0);
-			drawRounded(canvas, rect, mPath);
-		}
-	}
-	
-	private void drawRounded(Canvas canvas, RectF rect, Path path) {
-		if (getDrawable() == null) {
-			return;
+			canvas.drawPath(mPath, mBitmapPaint);
 		}
 
-		setupRoundePaint();
-		
-		if(mRadius == null){
-			canvas.drawPaint(mBitmapPaint);
-		}else{
-			if (mRadius[0] == mRadius[1] && mRadius[0] == mRadius[2] && mRadius[0] == mRadius[3]) {
-				canvas.drawRoundRect(rect, mRadius[0], mRadius[0], mBitmapPaint);
-			}else{
-				canvas.drawPath(path, mBitmapPaint);
-			}
-		}
+		mBitmapPaint.setShader(null);
 	}
-	
-	private void setupRoundePaint() {
-		if (getDrawable() == null) {
-			return;
-		}
-		
-		Bitmap bitmap = getBitmapFromDrawable();
-		if(bitmap == null){
-			return;
-		}
-		
-		BitmapShader bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 
-		bitmapShader.setLocalMatrix(getImageMatrix());
-        
-		if(mBitmapPaint == null){
-			mBitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-			mBitmapPaint.setDither(false);
+    protected boolean setupBitmapPaint() {
+        Drawable drawable = getDrawable();
+        if (drawable == null) {
+            return false;
 		}
-        
-		mBitmapPaint.setShader(bitmapShader);
+
+        Bitmap bitmap = getBitmapFromDrawable(drawable);
+        if(bitmap == null){
+            return false;
+        }
+
+        BitmapShader bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        bitmapShader.setLocalMatrix(getImageMatrix());
+        mBitmapPaint.setShader(bitmapShader);
+        return true;
+    }
+
+    protected RectF getRectF(){
+		return new RectF(getPaddingLeft(), getPaddingTop(), getRight() - getLeft() - getPaddingRight(),
+				getBottom() - getTop() - getPaddingBottom());
 	}
-	
-	protected RectF getRectF(){
-		if(mRect == null){
-			mRect = new RectF(getPaddingLeft(), getPaddingTop(), getRight() - getLeft() - getPaddingRight(),
-					getBottom() - getTop() - getPaddingBottom());
-		}
-		return mRect;
-	}
-	
-	protected Bitmap getBitmapFromDrawable() {
-		return BitmapUtils.getBitmapFromDrawable(getDrawable());
+
+	protected Bitmap getBitmapFromDrawable(Drawable drawable){
+		return BitmapUtils.getBitmapFromDrawable(drawable);
 	}
 }

@@ -17,8 +17,6 @@ package com.ctao.customview.svg;
    limitations under the License.
 */
 
-import java.io.IOException;
-
 /**
  * Runtime exception thrown when there is a problem parsing an SVG.
  *

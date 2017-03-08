@@ -7,13 +7,15 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import com.ctao.customview.R;
 import com.ctao.customview.utils.DisplayUtils;
 
-public class TagImageView extends BorderImageView {
+public class TagImageView extends RoundedImageView {
 
 	private static final int LEFT_TOP = 0x00;
 	private static final int RIGHT_TOP = 0x01;
@@ -39,17 +41,17 @@ public class TagImageView extends BorderImageView {
 	private Point mStartPoint;
 	private Point mEndPoint;
 	private Path mTagPath;
-	private boolean isEnable = true;
+	private boolean isEnable;
 
 	public TagImageView(Context context) {
 		this(context, null);
 	}
 
-	public TagImageView(Context context, AttributeSet attrs) {
+	public TagImageView(Context context, @Nullable AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 
-	public TagImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+	public TagImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		init(context, attrs);
 	}
@@ -71,62 +73,51 @@ public class TagImageView extends BorderImageView {
 		isEnable = ta.getBoolean(R.styleable.TagImageView_tagEnable, isEnable);
 		ta.recycle();
 
-		if (!isSetupBorderSize()) {
-			setBorderSize(0);
-		}
-
 		mStartPoint = new Point();
 		mEndPoint = new Point();
 		mTagTextBound = new Rect();
+
+		mTagPath = new Path();
+
+		mTagBgPaint = new Paint();
+		mTagBgPaint.setAntiAlias(true);
+		mTagBgPaint.setDither(true);
+		mTagBgPaint.setStyle(Paint.Style.STROKE);
+		mTagBgPaint.setStrokeJoin(Paint.Join.ROUND);
+		mTagBgPaint.setStrokeCap(Paint.Cap.SQUARE);
+
+		mTagTextPaint = new Paint();
+		mTagBgPaint.setAntiAlias(true);
+		mTagTextPaint.setDither(false);
 	}
 
-	@Override
-	protected void onDraw(Canvas canvas) {
-		if (isEnable) {
-			if(getRadius() == null){
-				setRadius(new float[] { 0f, 0f, 0f, 0f }); //为null, mPathFactory.planRoundPath直接return;
-			}
-		}
-		super.onDraw(canvas);
-	}
-
-	// replace bitmap, add tag
-	@Override
-	protected Bitmap getBitmapFromDrawable() {
-		Bitmap bitmap = super.getBitmapFromDrawable();
+	protected Bitmap getBitmapFromDrawable(Drawable drawable){
+		Bitmap bitmap = super.getBitmapFromDrawable(drawable);
 		if (!isEnable) {
 			return bitmap;
 		}
 
-		Bitmap tempBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(tempBitmap);
-		canvas.drawBitmap(bitmap, 0, 0, null);
-
-		// add tag
-		addTag(canvas);
-
-		return tempBitmap;
-	}
-
-	private void addTag(Canvas canvas) {
-		if (mTagPath == null) {
-			mTagPath = new Path();
+		if(!bitmap.isMutable()){
+			bitmap = bitmap.copy(bitmap.getConfig(), true);
 		}
+
+		Canvas canvas = new Canvas(bitmap);
 
 		// draw background
 		float distance = mCornerDistance + mTagWidth / 2;
 		initStartAndEndPoint(distance);
-		setupTagBgPaint();
-
+		mTagBgPaint.setColor(mTagBackgroundColor);
+		mTagBgPaint.setStrokeWidth(mTagWidth);
 		mTagPath.reset();
 		mTagPath.moveTo(mStartPoint.x, mStartPoint.y);
 		mTagPath.lineTo(mEndPoint.x, mEndPoint.y);
 		canvas.drawPath(mTagPath, mTagBgPaint);
 
 		// draw text
-		setupTagTextPaint();
+		mTagTextPaint.setTextSize(mTagTextSize);
+		mTagTextPaint.getTextBounds(mTagText, 0, mTagText.length(), mTagTextBound);
+		mTagTextPaint.setColor(mTagTextColor);
 		float hypotenuse = THE_SQUARE_ROOT_OF_2 * distance;
-		
 		float x = hypotenuse / 2 - mTagTextBound.width() / 2;
 		float y = mTagTextBound.height() / 2 + mTagTextDownX;
 		if (mTagTextRotate != 0) {
@@ -138,63 +129,39 @@ public class TagImageView extends BorderImageView {
 		if (mTagTextRotate != 0) {
 			canvas.restore();
 		}
-		
+
+		return bitmap;
 	}
 
 	private void initStartAndEndPoint(float distance) {
 		int width = getMeasuredWidth();
 		int height = getMeasuredHeight();
 		switch (mTagOrientation) {
-        case LEFT_TOP:
-            mStartPoint.x = 0;
-            mStartPoint.y = distance;
-            mEndPoint.x = distance;
-            mEndPoint.y = 0;
-            break;
-        case RIGHT_TOP:
-        	mStartPoint.x = width - distance;
-        	mStartPoint.y = 0;
-        	mEndPoint.x = width;
-        	mEndPoint.y = distance;
-            break;
-        case LEFT_BOTTOM:
-        	mStartPoint.x = width - distance;
-        	mStartPoint.y = height;
-        	mEndPoint.x = width;
-        	mEndPoint.y = height - distance;
-            break;
-        case RIGHT_BOTTOM:
-        	mStartPoint.x = 0;
-            mStartPoint.y = height - distance;
-            mEndPoint.x = distance;
-            mEndPoint.y = height;
-            break;
-    }
-	}
-
-	
-	private void setupTagBgPaint() {
-		if (mTagBgPaint == null) {
-			mTagBgPaint = new Paint();
-			mTagBgPaint.setAntiAlias(true);
-			mTagBgPaint.setDither(true);
+			case LEFT_TOP:
+				mStartPoint.x = 0;
+				mStartPoint.y = distance;
+				mEndPoint.x = distance;
+				mEndPoint.y = 0;
+				break;
+			case RIGHT_TOP:
+				mStartPoint.x = width - distance;
+				mStartPoint.y = 0;
+				mEndPoint.x = width;
+				mEndPoint.y = distance;
+				break;
+			case LEFT_BOTTOM:
+				mStartPoint.x = width - distance;
+				mStartPoint.y = height;
+				mEndPoint.x = width;
+				mEndPoint.y = height - distance;
+				break;
+			case RIGHT_BOTTOM:
+				mStartPoint.x = 0;
+				mStartPoint.y = height - distance;
+				mEndPoint.x = distance;
+				mEndPoint.y = height;
+				break;
 		}
-		mTagBgPaint.setColor(mTagBackgroundColor);
-		mTagBgPaint.setStyle(Paint.Style.STROKE);
-		mTagBgPaint.setStrokeJoin(Paint.Join.ROUND);
-		mTagBgPaint.setStrokeCap(Paint.Cap.SQUARE);
-		mTagBgPaint.setStrokeWidth(mTagWidth);
-	}
-
-	private void setupTagTextPaint() {
-		if (mTagTextPaint == null) {
-			mTagTextPaint = new Paint();
-			mTagBgPaint.setAntiAlias(true);
-			mTagTextPaint.setDither(false);
-		}
-		mTagTextPaint.setTextSize(mTagTextSize);
-		mTagTextPaint.getTextBounds(mTagText, 0, mTagText.length(), mTagTextBound);
-		mTagTextPaint.setColor(mTagTextColor);
 	}
 
 	private class Point {
