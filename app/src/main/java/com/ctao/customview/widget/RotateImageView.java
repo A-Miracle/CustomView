@@ -16,6 +16,7 @@ public class RotateImageView extends BorderImageView {
 	private int mDirection = CLOCKWISE; //方向
 	private int isNotChange;
 	private Bitmap mTempBitmap;
+	private boolean isRedraw;
 
 	public RotateImageView(Context context) {
 		this(context, null);
@@ -70,12 +71,32 @@ public class RotateImageView extends BorderImageView {
 			long runTime = stopTime - startTime;
 			
 			// 16毫秒执行一次
-			invalidateDelayed(Math.abs(runTime - 16));
+			if(isRedraw){
+                	    postInvalidateDelayed(Math.abs(runTime - 16));
+		        }else{
+			    invalidateDelayed(Math.abs(runTime - 16));
+		        }
 		}
 	}
 	
 	private void invalidateDelayed(long delayMilliseconds) {
 		isNotChange = 1;
 		postInvalidateDelayed(delayMilliseconds);
+	}
+	
+	@Override
+	public void setImageDrawable(@Nullable Drawable drawable) {
+		super.setImageDrawable(drawable);
+		isRedraw = true;
+		postDelayed(new Runnable() {
+		    @Override
+		    public void run() {
+			isRedraw = false;
+		    }
+		}, 1000);
+	}
+
+	public void setDegree(int degree){
+		mDegree = degree;
 	}
 }
